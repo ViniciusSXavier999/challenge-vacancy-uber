@@ -1,10 +1,12 @@
 package com.vx.challenge.emailservice.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.vx.challenge.emailservice.adapters.EmailSenderGateway;
 import com.vx.challenge.emailservice.core.EmailSenderUseCase;
 
+@Service
 // Essa classe implemneta a minha interface da camada core
 /*Essa camada da aplicação conecta o core da aplicação com o mundo externo é ela que vai 
  * implementar de fato o core da nossa aplicação.*/
