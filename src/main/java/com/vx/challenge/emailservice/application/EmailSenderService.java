@@ -2,6 +2,7 @@ package com.vx.challenge.emailservice.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vx.challenge.emailservice.adapters.EmailSenderGateway;
 import com.vx.challenge.emailservice.core.EmailSenderUseCase;
 
 // Essa classe implemneta a minha interface da camada core
@@ -12,13 +13,14 @@ public class EmailSenderService implements EmailSenderUseCase {
 	private final EmailSenderGateway emailSenderGateway;
 	
 	@Autowired
-	public EmailSenderService(EmailSenderGateway) {
+	public EmailSenderService(EmailSenderGateway emailGateway) {
 		this.emailSenderGateway = emailGateway;
 	}
 
 	@Override
 	public void sendEmail(String to, String subject, String body) {
-		// TODO Auto-generated method stub
+		this.emailSenderGateway.sendEmail(to, subject, body);
+	
 		
 	}
 	
