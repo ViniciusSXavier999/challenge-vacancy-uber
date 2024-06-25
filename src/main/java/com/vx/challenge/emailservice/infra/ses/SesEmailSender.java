@@ -1,5 +1,6 @@
 package com.vx.challenge.emailservice.infra.ses;
 
+import com.vx.challenge.emailservice.core.exceptions.EmailServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,14 @@ import com.vx.challenge.emailservice.adapters.EmailSenderGateway;
 
 @Service
 /*Estamos implementando a interface que o meu emailSenderService depende */
+/* camada responsável por interagir com serviços externos!! */
 public class SesEmailSender implements EmailSenderGateway {
 	
 	private final AmazonSimpleEmailService amazonSimpleEmailService;
-	
+
+	/* colocamos o autowired para dizer para o spring instanciar o meu objeto
+	* automaticamente, dessa forma não precisamos ficar utilizando o operador
+	* new a todo momento */
 	@Autowired
 	public SesEmailSender(AmazonSimpleEmailService amazonSimpleEmailService) {
 		this.amazonSimpleEmailService = amazonSimpleEmailService;
@@ -33,15 +38,17 @@ public class SesEmailSender implements EmailSenderGateway {
 				.withDestination(new Destination().withToAddresses(to))
 				// Qual vai ser a mensagem do email 
 				.withMessage(new Message()
+						// assunto da mensagem
 						.withSubject(new Content(subject))
+						// corpo da mensagem
 						.withBody(new Body().withText(new Content(body)))
 						
 						);
 		
 		try {
 			this.amazonSimpleEmailService.sendEmail(request);
-		} catch (AmazonServiceExceptionn exception) {
-			throw new EmailServiceException("Falha ao enviar o email.");
+		} catch (AmazonServiceException exception) {
+			throw new EmailServiceException("Falha ao enviar o email.", exception);
 			
 		}
 		
